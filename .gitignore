@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/Koduppgifter/Kapitel_4/mnist_train.csv
+.env
+**/.env
+.env
+.env
