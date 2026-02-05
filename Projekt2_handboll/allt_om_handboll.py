@@ -7,10 +7,14 @@ import cv2
 import base64
 import tempfile
 from openai import OpenAI
-from dotenv import load_dotenv
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
 
-client = OpenAI(api_key=st.secrets("OPENAI_API_KEY"))
+api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key)
 
 EMBED_MODEL = "text-embedding-3-small"
 CHAT_MODEL = "gpt-4o-mini"
