@@ -1,0 +1,5 @@
+streamlit
+numpy
+openai
+faiss-cpu
+opencv-python-headless
