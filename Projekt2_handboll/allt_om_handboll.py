@@ -7,6 +7,7 @@ import cv2
 import base64
 import tempfile
 from openai import OpenAI
+from pathlib import Path
 try:
     from dotenv import load_dotenv
     load_dotenv()
@@ -32,18 +33,30 @@ VISION_MODEL = "gpt-4o"
 # Load FAISS index and chunks with metadata
 @st.cache_resource
 def load_data():
-    index = faiss.read_index("handboll_faiss.index")
-    with open("chunks.pkl", "rb") as f:
+    BASE_DIR = Path(__file__).resolve().parent
+
+    index_path = BASE_DIR / "handboll_faiss.index"
+    chunks_path = BASE_DIR / "chunks.pkl"
+    metadata_path = BASE_DIR / "chunks_with_metadata.pkl"
+
+    # Debug – visar vad som finns i Cloud
+    if not index_path.exists():
+        st.error(f"Hittar inte indexfilen: {index_path}")
+        st.write("Filer i mappen:", [p.name for p in BASE_DIR.iterdir()])
+        st.stop()
+
+    index = faiss.read_index(str(index_path))
+
+    with open(chunks_path, "rb") as f:
         chunks = pickle.load(f)
-    
-    # Try to load metadata (source info for each chunk)
+
     try:
-        with open("chunks_with_metadata.pkl", "rb") as f:
+        with open(metadata_path, "rb") as f:
             data = pickle.load(f)
             metadata = data.get("metadata", None)
     except:
         metadata = None
-    
+
     return index, chunks, metadata
 
 index, chunks, chunk_metadata = load_data()
