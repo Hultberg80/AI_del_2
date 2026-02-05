@@ -3,3 +3,4 @@ numpy
 openai
 faiss-cpu
 opencv-python-headless
+python-dotenv
