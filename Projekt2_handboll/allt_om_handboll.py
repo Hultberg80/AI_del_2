@@ -13,7 +13,16 @@ try:
 except Exception:
     pass
 
-api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+# Försök läsa från Streamlit Cloud secrets utan att trigga parse-fel
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+except Exception:
+    api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    st.error("OPENAI_API_KEY saknas. Lägg den i Streamlit Cloud → Settings → Secrets.")
+    st.stop()
+
 client = OpenAI(api_key=api_key)
 
 EMBED_MODEL = "text-embedding-3-small"
