@@ -426,7 +426,7 @@ with tab2:
                 situation = analyze_video_situation(frames)
                 st.session_state.video_situation = situation
             
-            with st.spinner("Hämtar regler från ditt regeldokument och ger domslut..."):
+            with st.spinner("Hämtar regler från regeldokument och ger domslut..."):
                 verdict, hits = get_referee_verdict(situation, top_k=video_top_k)
                 st.session_state.video_verdict = verdict
                 st.session_state.video_hits = hits
@@ -457,7 +457,7 @@ with tab2:
         st.success(st.session_state.video_verdict)
         
         # ALLTID visa vilka regler som användes
-        st.subheader("Använda regler från ditt regeldokument")
+        st.subheader("Använda regler från regeldokument")
         if "video_hits" in st.session_state:
             for hit in st.session_state.video_hits:
                 if len(hit) == 5:
